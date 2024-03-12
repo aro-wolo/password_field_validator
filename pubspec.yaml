@@ -1,11 +1,10 @@
-name: password_validated_field
+name: password_field_validator
 description: With this package you can have a nice, cool and validated password text fields in your application.
-version: 0.0.1
-homepage: https://github.com/m-hamzashakeel/password_validated_field
+version: 1.0.1
+
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
-  flutter: ">=1.17.0"
+  sdk: ">=3.2.3 <4.0.0"
 
 dependencies:
   flutter:

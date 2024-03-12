@@ -5,12 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "password_validated_field",
+            "name": "password_field_validator",
             "request": "launch",
             "type": "dart",
         },
         {
-            "name": "password_validated_field (profile mode)",
+            "name": "password_field_validator (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"

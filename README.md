@@ -2,7 +2,7 @@ A package that lets you include a cool, nice looking and validated `Password Tex
 
 ## Customizable Attributes
 
-Import `package:password_validated_field/src/requirement_widget.dart` and following fields are modifiable:
+Import `package:password_field_validator/src/requirement_widget.dart` and following fields are modifiable:
 - `inputDecoration`
 - `textEditingController`
 - `textInputAction`
@@ -19,7 +19,7 @@ Import `package:password_validated_field/src/requirement_widget.dart` and follow
 ## 👀 Here's how it looks
 Below are few samples of what the package looks like.
 
-**Import** the package and use `package:password_validated_field/password_validated_field.dart`
+**Import** the package and use `package:password_field_validator/password_field_validator.dart`
 
 ## 💻 Simple usage
 
@@ -60,7 +60,7 @@ class _ExampleState extends State<Example> {
                     style: TextStyle(fontSize: 22.0),
                   )
                 : Container(),
-            PasswordValidatedFields(), // password validated field from package
+            PasswordFieldValidator(), // password validated field from package
             ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -124,7 +124,7 @@ class _CustomizeFieldExampleState extends State<CustomizeFieldExample> {
                     style: TextStyle(fontSize: 22.0),
                   )
                 : Container(),
-            PasswordValidatedFields(
+            PasswordFieldValidator(
               inActiveIcon: Icons.cancel_outlined,
               activeIcon: Icons.check,
               inActiveRequirementColor: Colors.orange,
@@ -193,7 +193,7 @@ class _MoreCustomizedFieldState extends State<MoreCustomizedField> {
                     style: TextStyle(fontSize: 22.0),
                   )
                 : Container(),
-            PasswordValidatedFields(
+            PasswordFieldValidator(
               inActiveIcon: Icons.cancel,
               activeIcon: Icons.done_all,
               inputDecoration: InputDecoration(

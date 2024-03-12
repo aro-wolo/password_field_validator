@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:password_validated_field/src/requirement_widget.dart';
+import 'package:password_field_validator/src/requirement_widget.dart';
 
-class PasswordValidatedFields extends StatefulWidget {
-  
+class PasswordFieldValidator extends StatefulWidget {
   /// Password `validation` is given at the bottom which can be `modified` accordingly.
   /// Full package can be modified easily
-  
 
   /// Input decoration of Text field by default it is OutlineInputBorder
-  final InputDecoration? inputDecoration;
+  //final InputDecoration? inputDecoration;
 
-  /// textEditingController for the field
-  final TextEditingController? textEditingController;
+  /// controller for the field
+  final TextEditingController? controller;
 
   /// textInputAction for the field. By default its set to [done]
   final TextInputAction? textInputAction;
@@ -27,6 +25,7 @@ class PasswordValidatedFields extends StatefulWidget {
 
   /// cursorColor
   final Color? cursorColor;
+  final ValueChanged<String>? onChanged;
 
   /// textStyle of the Text in field
   final TextStyle? textStyle;
@@ -45,15 +44,15 @@ class PasswordValidatedFields extends StatefulWidget {
   final Color? inActiveRequirementColor;
 
   /// Constructor
-  PasswordValidatedFields({
-    Key? key,
+  const PasswordFieldValidator({
+    super.key,
 
     /// [default inputDecoration]
-    this.inputDecoration = const InputDecoration(
-        hintText: "Enter password",
-        prefixIcon: Icon(Icons.lock),
-        border: OutlineInputBorder()),
-    this.textEditingController,
+/*     this.inputDecoration = const InputDecoration(
+      border: OutlineInputBorder(),
+      labelText: "Password",
+    ), */
+    this.controller,
 
     /// [default textInputAction]
     this.textInputAction = TextInputAction.done,
@@ -74,84 +73,105 @@ class PasswordValidatedFields extends StatefulWidget {
     this.inActiveRequirementColor = Colors.grey,
 
     /// [default active color]
-    this.activeRequirementColor = Colors.blue,
-  }) : super(key: key);
+    this.activeRequirementColor = Colors.blueAccent,
+    this.onChanged,
+    //this.inputDecoration,
+  });
 
   @override
-  _PasswordValidatedFieldsState createState() =>
-      _PasswordValidatedFieldsState();
+  _PasswordFieldValidatorState createState() => _PasswordFieldValidatorState();
 }
 
-class _PasswordValidatedFieldsState extends State<PasswordValidatedFields> {
+class _PasswordFieldValidatorState extends State<PasswordFieldValidator> {
   String _pass = "";
+  bool _hidePassword = true;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-
-          /// [Password TextFormField]
-          /// Use `Form` to validate the field easily
-          TextFormField(
-            textInputAction: widget.textInputAction,
-            controller: widget.textEditingController,
-            keyboardType: TextInputType.text,
-            obscureText: true,
-            decoration: widget.inputDecoration,
-            onEditingComplete: widget.onEditComplete,
-            onFieldSubmitted: widget.onFieldSubmitted,
-            focusNode: widget.focusNode,
-            cursorColor: widget.cursorColor,
-            style: widget.textStyle,
-            onChanged: (value) {
-              setState(() {
-                _pass = value;
-                print(_pass);
-              });
-            },
-            validator: passwordValidation,
+    _pass = widget.controller!.text;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        /// [Password TextFormField]
+        /// Use `Form` to validate the field easily
+        TextFormField(
+          textInputAction: widget.textInputAction,
+          controller: widget.controller,
+          keyboardType: TextInputType.text,
+          obscureText: _hidePassword,
+          /* decoration: widget.inputDecoration, */
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            labelText: "Password",
+            suffixIcon: IconButton(
+              icon: Icon(
+                color: Colors.grey,
+                _hidePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+              ),
+              onPressed: () {
+                setState(
+                  () {
+                    _hidePassword = !_hidePassword;
+                  },
+                );
+              },
+            ),
           ),
-          SizedBox(height: 10.0),
+          onEditingComplete: widget.onEditComplete,
+          onFieldSubmitted: widget.onFieldSubmitted,
+          focusNode: widget.focusNode,
+          cursorColor: widget.cursorColor,
+          style: widget.textStyle,
+          onChanged: (value) {
+            setState(() {
+              _pass = value;
+            });
+            widget.onChanged?.call(value);
+          },
+          validator: passwordValidation,
+        ),
+        const SizedBox(height: 10.0),
 
-          /// [default requirements]
-          /// `1 Upper case` requirement
-          PassCheckRequirements(
-            passCheck: _pass.contains(RegExp(r'[A-Z]')),
-            requirementText: "1 Uppercase [A-Z]",
-          ),
-
-          /// `1 lowercase` requirement
-          PassCheckRequirements(
-            passCheck: _pass.contains(RegExp(r'[a-z]')),
-            requirementText: "1 lowercase [a-z]",
-          ),
-
-          /// `1 numeric value` requirement
-          PassCheckRequirements(
-            passCheck: _pass.contains(RegExp(r'[0-9]')),
-            requirementText: "1 numeric value [0-9]",
-          ),
-
-          /// `1 special character` requirement
-          PassCheckRequirements(
-            passCheck: _pass.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]')),
-            requirementText: "1 special character [#, \$, % etc..]",
-          ),
-
-          /// `6 character length` requirement
-          PassCheckRequirements(
-            passCheck: _pass.length >= 6,
-            requirementText: "6 characters minimum",
-          ),
-        ],
-      ),
+        Column(
+          children: [
+            PassCheckRequirements(
+              passCheck: _pass.contains(RegExp(r'[A-Z]')),
+              requirementText: "1 Uppercase [A-Z]",
+              activeColor: widget.activeRequirementColor,
+              inActiveColor: widget.inActiveRequirementColor,
+              inActiveIcon: widget.inActiveIcon,
+              activeIcon: widget.activeIcon,
+            ),
+            PassCheckRequirements(
+              passCheck: _pass.contains(RegExp(r'[0-9]')),
+              requirementText: "1 numeric value [0-9]",
+              activeColor: widget.activeRequirementColor,
+              inActiveColor: widget.inActiveRequirementColor,
+              inActiveIcon: widget.inActiveIcon,
+              activeIcon: widget.activeIcon,
+            ),
+            PassCheckRequirements(
+              passCheck: _pass.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]')),
+              requirementText: "1 special character [#, \$, % etc..]",
+              activeColor: widget.activeRequirementColor,
+              inActiveColor: widget.inActiveRequirementColor,
+              inActiveIcon: widget.inActiveIcon,
+              activeIcon: widget.activeIcon,
+            ),
+            PassCheckRequirements(
+              passCheck: _pass.length >= 6,
+              requirementText: "6 characters minimum",
+              activeColor: widget.activeRequirementColor,
+              inActiveColor: widget.inActiveRequirementColor,
+              inActiveIcon: widget.inActiveIcon,
+              activeIcon: widget.activeIcon,
+            ),
+          ],
+        ),
+      ],
     );
   }
-
 
   /// [password validation]
   /// 1 Uppercase
@@ -159,11 +179,13 @@ class _PasswordValidatedFieldsState extends State<PasswordValidatedFields> {
   /// 1 numeric value
   /// 1 special character
   /// 6 length password
-  
+
   /// In case you want to `modify` the requirements change the `RegExp` given below
   String? passwordValidation(String? value) {
     bool passValid =
-        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{6,}$') /// [RegExp]
+        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{6,}$')
+
+            /// [RegExp]
             .hasMatch(value!);
     if (value.isEmpty) {
       return "Password cannot be emtpy!";
@@ -173,3 +195,4 @@ class _PasswordValidatedFieldsState extends State<PasswordValidatedFields> {
     return null;
   }
 }
+
