@@ -9,7 +9,7 @@ class PasswordFieldValidator extends StatefulWidget {
   //final InputDecoration? inputDecoration;
 
   /// controller for the field
-  final TextEditingController? controller;
+  final TextEditingController controller;
 
   /// textInputAction for the field. By default its set to [done]
   final TextInputAction? textInputAction;
@@ -52,7 +52,7 @@ class PasswordFieldValidator extends StatefulWidget {
       border: OutlineInputBorder(),
       labelText: "Password",
     ), */
-    this.controller,
+    required this.controller,
 
     /// [default textInputAction]
     this.textInputAction = TextInputAction.done,
@@ -195,4 +195,3 @@ class _PasswordFieldValidatorState extends State<PasswordFieldValidator> {
     return null;
   }
 }
-
