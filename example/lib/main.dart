@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:password_field_validator/password_field_validator.dart';
 
-/// Complete Simple Example
 class Example extends StatefulWidget {
   const Example({Key? key}) : super(key: key);
 
@@ -10,10 +9,9 @@ class Example extends StatefulWidget {
 }
 
 class _ExampleState extends State<Example> {
-  // simple check
   bool _validPassword = false;
+  final TextEditingController pwdController = TextEditingController();
 
-  // form key for validation
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -33,7 +31,9 @@ class _ExampleState extends State<Example> {
                     style: TextStyle(fontSize: 22.0),
                   )
                 : Container(),
-            PasswordFieldValidator(), // password validated field from package
+            PasswordFieldValidator(
+              controller: pwdController,
+            ), // password validated field from package
 
             // Button to validate the form
             ElevatedButton(

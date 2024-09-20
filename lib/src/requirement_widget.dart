@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class PassCheckRequirements extends StatelessWidget {
-
   /// a `bool` value as check [required] field in case you want to `modify` the package
   final bool? passCheck;
 
@@ -22,8 +21,8 @@ class PassCheckRequirements extends StatelessWidget {
 
   PassCheckRequirements({
     Key? key,
-    @required this.passCheck, /// [required parameters] in case you want to modify the package
-    @required this.requirementText, /// [required parameters] in case you want to modify the package
+    required this.passCheck,
+    required this.requirementText,
 
     /// [default] value of in-active IconData
     this.inActiveIcon = Icons.check_circle_outline_rounded,
@@ -43,7 +42,6 @@ class PassCheckRequirements extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 3.5),
       child: Row(
         children: [
-
           /// requirement IconData based on check!
           passCheck!
               ? Icon(Icons.check_circle_rounded, color: activeColor)
